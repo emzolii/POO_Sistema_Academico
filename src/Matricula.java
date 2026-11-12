@@ -156,7 +156,7 @@ public class Matricula {
     public void setSemestre(String semestre) {
         this.semestre = semestre;
     }
-}
+
 public static int contarMatriculados(Disciplina disciplina, String semestre) { //Conta quantos alunos matriculados na disciplina e semestre
     int quantidade = 0;
 
@@ -169,4 +169,4 @@ public static int contarMatriculados(Disciplina disciplina, String semestre) { /
 
     return quantidade;
 }
-
+}
