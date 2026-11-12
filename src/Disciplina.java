@@ -15,9 +15,20 @@ public class Disciplina {
         this.vagas = vagas;
     }
 
-    public void atribuirProfessor(Professor professor) {
-        this.professor = professor;
+    /***
+     * Atribui um professor à disciplina.
+     * @param professor O professor a ser atribuído.
+     * @return true se o professor foi atribuído com sucesso, false caso contrário.
+     */
+    public boolean atribuirProfessor(Professor professor) {
+
+    if (this.professor != null) {
+        return false;
     }
+
+    this.professor = professor;
+    return true;
+}
 
     public void atribuirSala(Sala sala) {
         this.sala = sala;

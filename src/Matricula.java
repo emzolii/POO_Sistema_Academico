@@ -42,9 +42,23 @@ public class Matricula {
         return jaEstaNaLista(listaGeral);
     }
 
+    /***
+     * Matricula o aluno na disciplina.
+     * @return true se a matrícula foi realizada com sucesso, false caso contrário.
+     */
     public boolean matricular() {
         if (this.jaEstaNaLista()) {
             return false;
+        }
+        if (disciplina.getSala() == null) {
+            throw new RuntimeException("Disciplina não possui sala.");
+        }
+        if (disciplina.getVagas() > disciplina.getSala().getCapacidade()) {
+            throw new RuntimeException("Número de vagas excede a capacidade da sala.");
+        }
+        int quantidadeMatriculados = contarMatriculados(disciplina, semestre);
+        if (quantidadeMatriculados >= disciplina.getVagas()) {
+            throw new RuntimeException("Não há vagas disponíveis.");
         }
         listaGeral.add(this); 
         return true;
@@ -143,3 +157,16 @@ public class Matricula {
         this.semestre = semestre;
     }
 }
+public static int contarMatriculados(Disciplina disciplina, String semestre) { //Conta quantos alunos matriculados na disciplina e semestre
+    int quantidade = 0;
+
+    for (Matricula matricula : listaGeral) {
+        if (matricula.getDisciplina().getCodigo() == disciplina.getCodigo()
+                && matricula.getSemestre().equals(semestre)) {
+            quantidade++;
+        }
+    }
+
+    return quantidade;
+}
+
