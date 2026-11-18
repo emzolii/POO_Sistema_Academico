@@ -45,6 +45,17 @@ public class Aluno extends Pessoa {
         matriculasUtilizadas.add(matricula);
     }
 
+    public List<Disciplina> consultarDisciplinas() {
+        List<Disciplina> minhasDisciplinas = new ArrayList<>();
+        
+        for (Matricula m : Matricula.getListaGeral()) {
+            if (m.getAluno().getId() == this.getId()) {
+                minhasDisciplinas.add(m.getDisciplina());
+            }
+        }
+        return minhasDisciplinas;
+    }
+
     public String getEmail() {
         return email;
     }
