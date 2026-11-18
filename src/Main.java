@@ -45,5 +45,8 @@ public class Main {
             Matricula m = lista.get(i);
             System.out.println((i + 1) + "ª Matrícula - Aluno: " + m.getAluno().getNome());
         }
+
+        // RF3.6: Consultar quantas disciplinas o professor ministra
+        System.out.println("Disciplinas ministradas por " + professor1.getNome() + ": " + professor1.contarDisciplinasMinistradas());
     }
 }

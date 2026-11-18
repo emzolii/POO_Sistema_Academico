@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Disciplina {
     private Professor professor;
     private Sala sala;
+    private static List<Disciplina> listaGeral = new ArrayList<>();
 
     private int codigo;
     private String nome;
