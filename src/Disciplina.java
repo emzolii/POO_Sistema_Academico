@@ -30,6 +30,17 @@ public class Disciplina {
     return true;
 }
 
+    public List<Aluno> consultarAlunos() {
+    List<Aluno> meusAlunos = new ArrayList<>();
+        
+        for (Matricula m : Matricula.getListaGeral()) {
+            if (m.getDisciplina().getCodigo() == this.codigo) {
+                meusAlunos.add(m.getAluno());
+            }
+        }
+        return meusAlunos;
+    }
+
     public void atribuirSala(Sala sala) {
         this.sala = sala;
     }
