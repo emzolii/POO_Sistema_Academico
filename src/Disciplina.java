@@ -12,6 +12,7 @@ public class Disciplina {
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
         this.vagas = vagas;
+        listaGeral.add(this);
     }
 
     /***
@@ -43,6 +44,10 @@ public class Disciplina {
 
     public void atribuirSala(Sala sala) {
         this.sala = sala;
+    }
+
+    public static List<Disciplina> getListaGeral() {
+        return listaGeral;
     }
 
     public Professor getProfessor() {
