@@ -1,4 +1,3 @@
-package src;
 import java.util.List;
 
 public class Main {
@@ -46,7 +45,5 @@ public class Main {
             Matricula m = lista.get(i);
             System.out.println((i + 1) + "ª Matrícula - Aluno: " + m.getAluno().getNome());
         }
-
-        
     }
 }

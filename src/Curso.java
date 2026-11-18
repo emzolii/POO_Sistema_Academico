@@ -1,4 +1,3 @@
-package src;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,3 +71,4 @@ public class Curso {
         this.cargaHoraria = cargaHoraria;
     }
 }
+    

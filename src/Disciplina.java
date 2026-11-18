@@ -1,4 +1,3 @@
-package src;
 public class Disciplina {
     private Professor professor;
     private Sala sala;
@@ -19,7 +18,8 @@ public class Disciplina {
      * Atribui um professor à disciplina.
      * @param professor O professor a ser atribuído.
      * @return true se o professor foi atribuído com sucesso, false caso contrário.
-     */
+     * */
+     
     public boolean atribuirProfessor(Professor professor) {
 
     if (this.professor != null) {

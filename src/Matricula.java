@@ -1,4 +1,3 @@
-package src;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,8 @@ public class Matricula {
     /***
      * Matricula o aluno na disciplina.
      * @return true se a matrícula foi realizada com sucesso, false caso contrário.
-     */
+     * */
+     
     public boolean matricular() {
         if (this.jaEstaNaLista()) {
             return false;
@@ -88,7 +88,7 @@ public class Matricula {
         }
         return this.media;
     }
-   
+
     public Aluno getAluno() {
         return aluno;
     }
@@ -170,3 +170,4 @@ public static int contarMatriculados(Disciplina disciplina, String semestre) { /
     return quantidade;
 }
 }
+

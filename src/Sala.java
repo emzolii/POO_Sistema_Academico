@@ -1,4 +1,3 @@
-package src;
 public class Sala {
     private char bloco;
     private int numero;
