@@ -57,5 +57,23 @@ public class Main {
 
         // RF3.6: Consultar quantas disciplinas o professor ministra
         System.out.println("Disciplinas ministradas por " + professor1.getNome() + ": " + professor1.contarDisciplinasMinistradas());
+
+        // RF3.5: Consultar os alunos de uma disciplina e as disciplinas de um aluno
+        System.out.println("\nAlunos matriculados na disciplina " + disciplina1.getNome() + ":");
+        for (Aluno a : disciplina1.consultarAlunos()) {
+            System.out.println("- " + a.getNome());
+        }
+
+        System.out.println("\nDisciplinas cursadas por " + aluno1.getNome() + ":");
+        for (Disciplina d : aluno1.consultarDisciplinas()) {
+            System.out.println("- " + d.getNome());
+        }
+
+        // RN3.5: Ao remover um curso, as disciplinas continuam existindo (Agregação)
+        curso1.removerDisciplina(disciplina1);
+        System.out.println("\nDisciplina removida do curso '" + curso1.getNome() + "'.");
+        System.out.println("Disciplinas restantes no curso: " + curso1.getDisciplinas().size());
+        System.out.println("Disciplina '" + disciplina1.getNome() + "' continua ativa no sistema com Professor (" 
+                + disciplina1.getProfessor().getNome() + ") e Sala (" + disciplina1.getSala().getBloco() + " - " + disciplina1.getSala().getNumero() + ").");
     }
 }
