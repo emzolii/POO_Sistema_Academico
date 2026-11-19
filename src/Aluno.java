@@ -12,7 +12,7 @@ public class Aluno extends Pessoa {
     public Aluno(int id, String nome, int matricula, String email) {
         super(id, nome);
         if (matriculasUtilizadas.contains(matricula)) {
-            throw new RuntimeException("Matrícula já utilizada.");
+            throw new RegistroDuplicadoException("Matrícula já utilizada: " + matricula);
         }
         matriculasUtilizadas.add(matricula);
         this.matricula = matricula;
@@ -61,7 +61,7 @@ public class Aluno extends Pessoa {
 
     public void setMatricula(int matricula) {
         if (matriculasUtilizadas.contains(matricula)) {
-            throw new RuntimeException("Matrícula já utilizada.");
+            throw new RegistroDuplicadoException("Matrícula já utilizada: " + matricula);
         }
         matriculasUtilizadas.remove(Integer.valueOf(this.matricula));
         this.matricula = matricula;

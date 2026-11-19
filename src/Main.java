@@ -40,8 +40,12 @@ public class Main {
 
         //Segunda tentativa: Matricular Emily em Java no mesmo semestre (RN3.1 - deve falhar)
         Matricula m2 = new Matricula(aluno1, disciplina1, "2026.1");
-        boolean resultadoMatricula02 = m2.matricular();
-        System.out.println("2. Tentativa de duplicar matrícula de Emily em 2026.1: " + (resultadoMatricula02));
+        try {
+            m2.matricular();
+            System.out.println("2. Tentativa de duplicar matrícula de Emily em 2026.1: Sucesso indevido");
+        } catch (MatriculaDuplicadaException e) {
+            System.out.println("2. Tentativa de duplicar matrícula de Emily em 2026.1 bloqueada: " + e.getMessage());
+        }
 
         //Terceira tentativa: Matricular Emily em Java em outro semestre (RN3.1 - deve permitir)
         Matricula m3 = new Matricula(aluno1, disciplina1, "2026.2");
@@ -75,5 +79,22 @@ public class Main {
         System.out.println("Disciplinas restantes no curso: " + curso1.getDisciplinas().size());
         System.out.println("Disciplina '" + disciplina1.getNome() + "' continua ativa no sistema com Professor (" 
                 + disciplina1.getProfessor().getNome() + ") e Sala (" + disciplina1.getSala().getBloco() + " - " + disciplina1.getSala().getNumero() + ").");
+
+        // Demonstração de Exceção RN3.6: Número de matrícula de aluno já utilizado
+        try {
+            new Aluno(2, "Aluno Duplicado", 11112, "outro@email.com");
+        } catch (RegistroDuplicadoException e) {
+            System.out.println("\nExceção capturada (RN3.6 - Matrícula repetida): " + e.getMessage());
+        }
+
+        // Demonstração de Exceção RN3.2: Vagas excedem capacidade da sala
+        Disciplina disciplinaLotada = new Disciplina(102, "Banco de Dados", 60, 60);
+        disciplinaLotada.atribuirSala(sala1); // sala1 tem capacidade 50, vagas = 60
+        Matricula mInvalida = new Matricula(aluno1, disciplinaLotada, "2026.1");
+        try {
+            mInvalida.matricular();
+        } catch (SalaSemCapacidadeException e) {
+            System.out.println("Exceção capturada (RN3.2 - Sala insuficiente): " + e.getMessage());
+        }
     }
 }

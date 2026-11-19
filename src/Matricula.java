@@ -49,17 +49,17 @@ public class Matricula {
      
     public boolean matricular() {
         if (this.jaEstaNaLista()) {
-            return false;
+            throw new MatriculaDuplicadaException("Aluno já matriculado nesta disciplina no semestre " + semestre);
         }
         if (disciplina.getSala() == null) {
-            throw new RuntimeException("Disciplina não possui sala.");
+            throw new SalaSemCapacidadeException("Disciplina não possui sala definida.");
         }
         if (disciplina.getVagas() > disciplina.getSala().getCapacidade()) {
-            throw new RuntimeException("Número de vagas excede a capacidade da sala.");
+            throw new SalaSemCapacidadeException("Número de vagas excede a capacidade da sala.");
         }
         int quantidadeMatriculados = contarMatriculados(disciplina, semestre);
         if (quantidadeMatriculados >= disciplina.getVagas()) {
-            throw new RuntimeException("Não há vagas disponíveis.");
+            throw new SalaSemCapacidadeException("Não há vagas disponíveis.");
         }
         listaGeral.add(this); 
         return true;

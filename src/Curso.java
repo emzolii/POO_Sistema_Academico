@@ -20,13 +20,20 @@ public class Curso {
     public boolean addAluno(Aluno aluno) {
         if (aluno != null && !this.alunos.contains(aluno)) {
             this.alunos.add(aluno);
+            aluno.setCurso(this);
             return true;
         }
         return false;
     }
 
     public boolean removerAluno(Aluno aluno) {
-        return this.alunos.remove(aluno);
+        if (this.alunos.remove(aluno)) {
+            if (aluno != null) {
+                aluno.setCurso(null);
+            }
+            return true;
+        }
+        return false;
     }
 
     public List<Aluno> getAlunos() {
