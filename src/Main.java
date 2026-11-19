@@ -34,10 +34,15 @@ public class Main {
         boolean resultadoMatricula = m1.matricular();
         System.out.println("1. Matrícula de Emily em Java: " + (resultadoMatricula));
 
-        //Segunda tentativa: Matricular Emily em Java
+        //Segunda tentativa: Matricular Emily em Java no mesmo semestre (RN3.1 - deve falhar)
         Matricula m2 = new Matricula(aluno1, disciplina1, "2026.1");
         boolean resultadoMatricula02 = m2.matricular();
-        System.out.println("2. Tentativa de duplicar matrícula de Emily: " + (resultadoMatricula02));
+        System.out.println("2. Tentativa de duplicar matrícula de Emily em 2026.1: " + (resultadoMatricula02));
+
+        //Terceira tentativa: Matricular Emily em Java em outro semestre (RN3.1 - deve permitir)
+        Matricula m3 = new Matricula(aluno1, disciplina1, "2026.2");
+        boolean resultadoMatricula03 = m3.matricular();
+        System.out.println("3. Matrícula de Emily em Java em 2026.2 (outro semestre): " + resultadoMatricula03);
 
         List<Matricula> lista = Matricula.getListaGeral();
 

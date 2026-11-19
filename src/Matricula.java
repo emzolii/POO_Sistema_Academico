@@ -30,7 +30,8 @@ public class Matricula {
         }
         for (Matricula m : lista) {
             if (m.getAluno().getId() == this.aluno.getId() && 
-                m.getDisciplina().getCodigo() == this.disciplina.getCodigo()) {
+                m.getDisciplina().getCodigo() == this.disciplina.getCodigo() &&
+                this.semestre != null && this.semestre.equals(m.getSemestre())) {
                 return true;
             }
         }
