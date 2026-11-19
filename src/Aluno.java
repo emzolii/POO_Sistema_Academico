@@ -6,6 +6,7 @@ public class Aluno extends Pessoa {
     private int matricula;
     private String email;
     private Curso curso;
+    private Endereco endereco;
     private static List<Integer> matriculasUtilizadas = new ArrayList<>();
 
     public Aluno(int id, String nome, int matricula, String email) {
@@ -16,6 +17,16 @@ public class Aluno extends Pessoa {
         matriculasUtilizadas.add(matricula);
         this.matricula = matricula;
         this.email = email;
+    }
+
+    public Aluno(int id, String nome, int matricula, String email, Endereco endereco) {
+        this(id, nome, matricula, email);
+        this.endereco = endereco;
+    }
+
+    public Aluno(int id, String nome, int matricula, String email, String rua, int numero, String cidade, String uf) {
+        this(id, nome, matricula, email);
+        this.endereco = new Endereco(rua, numero, cidade, uf);
     }
 
     public static int gerarMatricula(String periodo) {
@@ -30,6 +41,18 @@ public class Aluno extends Pessoa {
     }
     public void setCurso(Curso curso) { 
         this.curso = curso; 
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setEndereco(String rua, int numero, String cidade, String uf) {
+        this.endereco = new Endereco(rua, numero, cidade, uf);
     }
 
     public int getMatricula() {

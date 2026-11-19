@@ -4,6 +4,7 @@ public class Main {
     public static void main(String[] args){
 
         Aluno aluno1 = new Aluno(1, "Emily Lauana", 11112, "emily.lauana@email.com");
+        aluno1.setEndereco("Rua das Flores", 123, "Recife", "PE");
         Disciplina disciplina1 = new Disciplina(101, "Programação Java",90,40);
         Professor professor1 = new Professor(1, "Dr. Michael Cruz", "TI");
         Sala sala1 = new Sala('B', 1, 50);
@@ -15,6 +16,9 @@ public class Main {
 
         for (Aluno aluno : curso1.getAlunos()) {
             System.out.println("Aluno matriculado no curso: " + aluno.getNome());
+            if (aluno.getEndereco() != null) {
+                System.out.println("Endereço: " + aluno.getEndereco());
+            }
         }
 
         for (Disciplina disciplina : curso1.getDisciplinas()) {
