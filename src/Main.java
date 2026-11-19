@@ -56,7 +56,7 @@ public class Main {
 
         for (int i = 0; i < lista.size(); i++) {
             Matricula m = lista.get(i);
-            System.out.println((i + 1) + "ª Matrícula - Aluno: " + m.getAluno().getNome());
+            System.out.println((i + 1) + "ª Matrícula: " + m.getAluno().getNome() + " em " + m.getDisciplina().getNome() + " (" + m.getSemestre() + ")");
         }
 
         // RF3.6: Consultar quantas disciplinas o professor ministra
@@ -80,21 +80,21 @@ public class Main {
         System.out.println("Disciplina '" + disciplina1.getNome() + "' continua ativa no sistema com Professor (" 
                 + disciplina1.getProfessor().getNome() + ") e Sala (" + disciplina1.getSala().getBloco() + " - " + disciplina1.getSala().getNumero() + ").");
 
-        // Demonstração de Exceção RN3.6: Número de matrícula de aluno já utilizado
+        // Demonstração de Exceção: Número de matrícula de aluno já utilizado
         try {
             new Aluno(2, "Aluno Duplicado", 11112, "outro@email.com");
         } catch (RegistroDuplicadoException e) {
-            System.out.println("\nExceção capturada (RN3.6 - Matrícula repetida): " + e.getMessage());
+            System.out.println("\nTentativa de cadastrar aluno com matrícula repetida: " + e.getMessage());
         }
 
-        // Demonstração de Exceção RN3.2: Vagas excedem capacidade da sala
+        // Demonstração de Exceção: Vagas excedem capacidade da sala
         Disciplina disciplinaLotada = new Disciplina(102, "Banco de Dados", 60, 60);
         disciplinaLotada.atribuirSala(sala1); // sala1 tem capacidade 50, vagas = 60
         Matricula mInvalida = new Matricula(aluno1, disciplinaLotada, "2026.1");
         try {
             mInvalida.matricular();
         } catch (SalaSemCapacidadeException e) {
-            System.out.println("Exceção capturada (RN3.2 - Sala insuficiente): " + e.getMessage());
+            System.out.println("Tentativa de matricular com sala sem capacidade: " + e.getMessage());
         }
     }
 }

@@ -36,11 +36,13 @@ public class Disciplina {
 }
 
     public List<Aluno> consultarAlunos() {
-    List<Aluno> meusAlunos = new ArrayList<>();
+        List<Aluno> meusAlunos = new ArrayList<>();
         
         for (Matricula m : Matricula.getListaGeral()) {
             if (m.getDisciplina().getCodigo() == this.codigo) {
-                meusAlunos.add(m.getAluno());
+                if (!meusAlunos.contains(m.getAluno())) {
+                    meusAlunos.add(m.getAluno());
+                }
             }
         }
         return meusAlunos;

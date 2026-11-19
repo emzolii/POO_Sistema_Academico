@@ -73,7 +73,9 @@ public class Aluno extends Pessoa {
         
         for (Matricula m : Matricula.getListaGeral()) {
             if (m.getAluno().getId() == this.getId()) {
-                minhasDisciplinas.add(m.getDisciplina());
+                if (!minhasDisciplinas.contains(m.getDisciplina())) {
+                    minhasDisciplinas.add(m.getDisciplina());
+                }
             }
         }
         return minhasDisciplinas;
