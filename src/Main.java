@@ -1,100 +1,119 @@
+import java.io.File;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        File dbAntigo = new File("sar.db");
+        if (dbAntigo.exists()) dbAntigo.delete();
 
-        Aluno aluno1 = new Aluno(1, "Emily Lauana", 11112, "emily.lauana@email.com");
-        aluno1.setEndereco("Rua das Flores", 123, "Recife", "PE");
-        Disciplina disciplina1 = new Disciplina(101, "Programação Java",90,40);
-        Professor professor1 = new Professor(1, "Dr. Michael Cruz", "TI");
-        Sala sala1 = new Sala('B', 1, 50);
+        // 1. Cria o arquivo sar.db com as 6 tabelas e chaves estrangeiras
+        ConexaoSQLite.inicializarBanco();
+        System.out.println("=== Banco sar.db inicializado com sucesso! ===\n");
 
-        //Ligar a disciplina e o aluno a um curso RF3.2
-        Curso curso1 = new Curso(1, "Engenharia da Computação", 3600);
-        curso1.addAluno(aluno1);
-        curso1.addDisciplina(disciplina1);
+        CursoDAO cursoDAO = new CursoDAO();
+        SalaDAO salaDAO = new SalaDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        AlunoDAO alunoDAO = new AlunoDAO();
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+        MatriculaDAO matriculaDAO = new MatriculaDAO();
 
-        for (Aluno aluno : curso1.getAlunos()) {
-            System.out.println("Aluno matriculado no curso: " + aluno.getNome());
-            if (aluno.getEndereco() != null) {
-                System.out.println("Endereço: " + aluno.getEndereco());
-            }
+        // 2. RF3.1: Cadastrar Curso, Sala, Professor (com endereço), Aluno (com endereço) e Disciplina
+        Curso curso = new Curso(0, "Engenharia da Computação", 3600);
+        cursoDAO.salvar(curso);
+
+        Sala sala = new Sala('B', 1, 50);
+        salaDAO.salvar(sala);
+
+        Professor professor = new Professor(
+            "Dr. Michael Cruz",
+            "TI",
+            new Endereco("Av. Universitária", 500, "Belo Jardim", "PE")
+        );
+        professorDAO.salvar(professor);
+
+        Aluno aluno1 = new Aluno(
+            "Emily Lauana",
+            11112,
+            "emily.lauana@email.com",
+            new Endereco("Rua das Flores", 123, "Recife", "PE")
+        );
+        aluno1.setCurso(curso);
+        alunoDAO.salvar(aluno1);
+
+        Disciplina disciplina = new Disciplina(101, "Programação Java", 90, 40);
+        disciplinaDAO.salvar(disciplina);
+
+        // RF3.2 e RF3.3: Associar disciplina ao curso e atribuir professor e sala
+        cursoDAO.associarDisciplina(curso.getIdCurso(), disciplina.getCodigo());
+        disciplinaDAO.atribuirProfessorESala(disciplina.getCodigo(), professor.getId(), sala.getId());
+
+        // RF3.1: Testando Edição (Update) e Listagem
+        aluno1.setEmail("emily.atualizado@email.com");
+        alunoDAO.atualizar(aluno1);
+
+        System.out.println("--- Alunos cadastrados no banco (RF3.1) ---");
+        for (Aluno a : alunoDAO.listarTodos()) {
+            System.out.println(a.getId() + " | " + a.getNome() + " | Mat: " + a.getMatricula()
+                + " | Endereço: " + a.getEndereco()
+                + " | Curso: " + (a.getCurso() != null ? a.getCurso().getNome() : "Sem curso"));
         }
 
-        for (Disciplina disciplina : curso1.getDisciplinas()) {
-            System.out.println("Disciplina do curso: " + disciplina.getNome());
-        }
+        // 3. RF3.4: Matrícula + desconto de vaga juntos na mesma transação
+        System.out.println("\n--- Teste de Matrícula e Vagas (RF3.4) ---");
+        System.out.println("Vagas disponíveis antes da matrícula: " + disciplinaDAO.buscarPorCodigo(101).getVagasDisponiveis());
 
-        //Escolher um professor e uma sala para a disciplina RF3.3
-        disciplina1.atribuirProfessor(professor1);
-        disciplina1.atribuirSala(sala1);
+        Matricula m1 = new Matricula(aluno1, disciplina, "2026.1");
+        matriculaDAO.matricular(m1);
+        System.out.println("Matrícula em 2026.1 realizada! Vagas disponíveis agora: "
+            + disciplinaDAO.buscarPorCodigo(101).getVagasDisponiveis());
 
-        System.out.println("Professor da disciplina " + disciplina1.getNome() + ": " + disciplina1.getProfessor().getNome());
-        System.out.println("Sala da disciplina " + disciplina1.getNome() + ": " + disciplina1.getSala().getBloco() + " - " + disciplina1.getSala().getNumero());
-
-        //Teste da matrícula duplicada RF3.4
-        //Primeira tentativa: Matricular Emily em Java
-        Matricula m1 = new Matricula(aluno1, disciplina1, "2026.1");
-        boolean resultadoMatricula = m1.matricular();
-        System.out.println("1. Matrícula de Emily em Java: " + (resultadoMatricula));
-
-        //Segunda tentativa: Matricular Emily em Java no mesmo semestre (RN3.1 - deve falhar)
-        Matricula m2 = new Matricula(aluno1, disciplina1, "2026.1");
+        // RN3.1: Tentativa de matrícula duplicada no mesmo semestre
         try {
-            m2.matricular();
-            System.out.println("2. Tentativa de duplicar matrícula de Emily em 2026.1: Sucesso indevido");
+            matriculaDAO.matricular(new Matricula(aluno1, disciplina, "2026.1"));
         } catch (MatriculaDuplicadaException e) {
-            System.out.println("2. Tentativa de duplicar matrícula de Emily em 2026.1 bloqueada: " + e.getMessage());
+            System.out.println("Bloqueio RN3.1 funcionou: " + e.getMessage());
         }
 
-        //Terceira tentativa: Matricular Emily em Java em outro semestre (RN3.1 - deve permitir)
-        Matricula m3 = new Matricula(aluno1, disciplina1, "2026.2");
-        boolean resultadoMatricula03 = m3.matricular();
-        System.out.println("3. Matrícula de Emily em Java em 2026.2 (outro semestre): " + resultadoMatricula03);
+        // Mesmo aluno na mesma disciplina em OUTRO semestre (permitido)
+        Matricula m2 = new Matricula(aluno1, disciplina, "2026.2");
+        matriculaDAO.matricular(m2);
+        System.out.println("Matrícula em 2026.2 realizada! Vagas disponíveis agora: "
+            + disciplinaDAO.buscarPorCodigo(101).getVagasDisponiveis());
 
-        List<Matricula> lista = Matricula.getListaGeral();
-
-        for (int i = 0; i < lista.size(); i++) {
-            Matricula m = lista.get(i);
-            System.out.println((i + 1) + "ª Matrícula: " + m.getAluno().getNome() + " em " + m.getDisciplina().getNome() + " (" + m.getSemestre() + ")");
-        }
-
-        // RF3.6: Consultar quantas disciplinas o professor ministra
-        System.out.println("Disciplinas ministradas por " + professor1.getNome() + ": " + professor1.contarDisciplinasMinistradas());
-
-        // RF3.5: Consultar os alunos de uma disciplina e as disciplinas de um aluno
-        System.out.println("\nAlunos matriculados na disciplina " + disciplina1.getNome() + ":");
-        for (Aluno a : disciplina1.consultarAlunos()) {
-            System.out.println("- " + a.getNome());
-        }
-
-        System.out.println("\nDisciplinas cursadas por " + aluno1.getNome() + ":");
-        for (Disciplina d : aluno1.consultarDisciplinas()) {
-            System.out.println("- " + d.getNome());
-        }
-
-        // RN3.5: Ao remover um curso, as disciplinas continuam existindo (Agregação)
-        curso1.removerDisciplina(disciplina1);
-        System.out.println("\nDisciplina removida do curso '" + curso1.getNome() + "'.");
-        System.out.println("Disciplinas restantes no curso: " + curso1.getDisciplinas().size());
-        System.out.println("Disciplina '" + disciplina1.getNome() + "' continua ativa no sistema com Professor (" 
-                + disciplina1.getProfessor().getNome() + ") e Sala (" + disciplina1.getSala().getBloco() + " - " + disciplina1.getSala().getNumero() + ").");
-
-        // Demonstração de Exceção: Número de matrícula de aluno já utilizado
+        // RN3.6: Tentativa de cadastrar aluno com matrícula repetida
         try {
-            new Aluno(2, "Aluno Duplicado", 11112, "outro@email.com");
+            Aluno duplicado = new Aluno("Outro Aluno", 11112, "outro@email.com",
+                new Endereco("Rua B", 10, "Recife", "PE"));
+            alunoDAO.salvar(duplicado);
         } catch (RegistroDuplicadoException e) {
-            System.out.println("\nTentativa de cadastrar aluno com matrícula repetida: " + e.getMessage());
+            System.out.println("Bloqueio RN3.6 funcionou: " + e.getMessage());
         }
 
-        // Demonstração de Exceção: Vagas excedem capacidade da sala
-        Disciplina disciplinaLotada = new Disciplina(102, "Banco de Dados", 60, 60);
-        disciplinaLotada.atribuirSala(sala1); // sala1 tem capacidade 50, vagas = 60
-        Matricula mInvalida = new Matricula(aluno1, disciplinaLotada, "2026.1");
+        // RN3.2: Disciplina com vagas maiores que a capacidade da sala
+        Disciplina discLotada = new Disciplina(102, "Banco de Dados", 60, 60);
+        disciplinaDAO.salvar(discLotada);
         try {
-            mInvalida.matricular();
+            disciplinaDAO.atribuirProfessorESala(102, professor.getId(), sala.getId());
         } catch (SalaSemCapacidadeException e) {
-            System.out.println("Tentativa de matricular com sala sem capacidade: " + e.getMessage());
+            System.out.println("Bloqueio RN3.2 funcionou: " + e.getMessage());
         }
+
+        // Consultas que alimentam RF3.5, RF3.6 e as futuras telas de detalhes
+        System.out.println("\n--- Consultas no Banco ---");
+        System.out.println("Disciplinas de " + aluno1.getNome() + ": " + disciplinaDAO.buscarPorAluno(aluno1.getId()).size());
+        System.out.println("Alunos em " + disciplina.getNome() + ": " + alunoDAO.buscarPorDisciplina(101).size());
+        System.out.println("Disciplinas do prof. " + professor.getNome() + ": " + professorDAO.contarDisciplinasMinistradas(professor.getId()));
+
+        // RN3.5: Remover o curso mantém a disciplina no banco (só zera o vínculo)
+        cursoDAO.remover(curso.getIdCurso());
+        Disciplina discAposRemoverCurso = disciplinaDAO.buscarPorCodigo(101);
+        System.out.println("\nRN3.5 - Após remover curso, disciplina 101 continua no banco? "
+            + (discAposRemoverCurso != null) + " | Curso vinculado: " + discAposRemoverCurso.getCurso());
+
+        // RN3.4: Remover aluno apaga o endereço, apaga as matrículas (CASCADE) e devolve as vagas
+        alunoDAO.remover(aluno1.getId());
+        List<Matricula> matriculasRestantes = matriculaDAO.listarPorAluno(aluno1.getId());
+        System.out.println("RN3.4 - Após remover aluno, matrículas restantes: " + matriculasRestantes.size()
+            + " | Vagas restauradas em 101: " + disciplinaDAO.buscarPorCodigo(101).getVagasDisponiveis());
     }
 }
