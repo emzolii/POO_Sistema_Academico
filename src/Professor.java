@@ -6,22 +6,25 @@ public class Professor extends Pessoa {
         this.departamento = departamento;
     }
 
+    public Professor(int id, String nome, String departamento, Endereco endereco) {
+        super(id, nome, endereco);
+        this.departamento = departamento;
+    }
+
+    public Professor(String nome, String departamento) {
+        this(0, nome, departamento);
+    }
+
+    public Professor(String nome, String departamento, Endereco endereco) {
+        this(0, nome, departamento, endereco);
+    }
+
     public String getDepartamento() {
         return departamento;
     }
 
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
-    }
-
-    public int contarDisciplinasMinistradas() {
-        int contador = 0;
-        for (Disciplina d : Disciplina.getListaGeral()) {
-            if (d.getProfessor() != null && d.getProfessor().getId() == this.getId()) {
-                contador++;
-            }
-        }
-        return contador;
     }
 
     @Override
