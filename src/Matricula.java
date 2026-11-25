@@ -12,6 +12,15 @@ public class Matricula {
     private String situacao;
     private String semestre;
 
+    public void carregarNotasDoBanco(double n1, double n2, double n3, double n4, double media, String situacao) {
+        this.nota01 = n1;
+        this.nota02 = n2;
+        this.nota03 = n3;
+        this.nota04 = n4;
+        this.media = media;
+        this.situacao = situacao;
+    }
+
     private static List<Matricula> listaGeral = new ArrayList<>();
 
     public Matricula(Aluno aluno, Disciplina disciplina, String semestre) {
