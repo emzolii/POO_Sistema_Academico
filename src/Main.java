@@ -115,5 +115,21 @@ public class Main {
         List<Matricula> matriculasRestantes = matriculaDAO.listarPorAluno(aluno1.getId());
         System.out.println("RN3.4 - Após remover aluno, matrículas restantes: " + matriculasRestantes.size()
             + " | Vagas restauradas em 101: " + disciplinaDAO.buscarPorCodigo(101).getVagasDisponiveis());
+
+        // 4. RF3.7: Importar alunos de um arquivo CSV salvando no SQLite
+        System.out.println("\n--- Importação de Alunos via CSV (RF3.7) ---");
+        try {
+            ImportadorCSV.ResultadoImportacao resultado = ImportadorCSV.importarAlunos("alunos.csv", alunoDAO);
+            System.out.println("Importação CSV concluída: " + resultado.getResumo());
+            for (Aluno a : alunoDAO.listarTodos()) {
+                System.out.println("- No banco: ID " + a.getId() + " | " + a.getNome()
+                    + " | Mat: " + a.getMatricula() + " | Endereço: " + a.getEndereco());
+            }
+            for (String erro : resultado.getErros()) {
+                System.out.println("- " + erro);
+            }
+        } catch (ArquivoInvalidoException e) {
+            System.out.println("Erro no CSV: " + e.getMessage());
+        }
     }
 }
