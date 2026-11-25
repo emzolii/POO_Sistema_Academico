@@ -1,69 +1,57 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Disciplina {
-    private Professor professor;
-    private Sala sala;
-    private static List<Disciplina> listaGeral = new ArrayList<>();
-
     private int codigo;
     private String nome;
     private int cargaHoraria;
     private int vagas;
+    private int vagasDisponiveis;
+    private Curso curso;
+    private Professor professor;
+    private Sala sala;
 
     public Disciplina(int codigo, String nome, int cargaHoraria, int vagas) {
         this.codigo = codigo;
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
         this.vagas = vagas;
-        listaGeral.add(this);
+        this.vagasDisponiveis = vagas;
     }
 
-    /***
-     * Atribui um professor à disciplina.
-     * @param professor O professor a ser atribuído.
-     * @return true se o professor foi atribuído com sucesso, false caso contrário.
-     * */
-     
     public boolean atribuirProfessor(Professor professor) {
-
-    if (this.professor != null) {
-        return false;
-    }
-
-    this.professor = professor;
-    return true;
-}
-
-    public List<Aluno> consultarAlunos() {
-        List<Aluno> meusAlunos = new ArrayList<>();
-        
-        for (Matricula m : Matricula.getListaGeral()) {
-            if (m.getDisciplina().getCodigo() == this.codigo) {
-                if (!meusAlunos.contains(m.getAluno())) {
-                    meusAlunos.add(m.getAluno());
-                }
-            }
+        if (this.professor != null) {
+            return false;
         }
-        return meusAlunos;
+        this.professor = professor;
+        return true;
     }
 
     public void atribuirSala(Sala sala) {
         this.sala = sala;
     }
 
-    public static List<Disciplina> getListaGeral() {
-        return listaGeral;
-    }
-
     public Professor getProfessor() {
         return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
     public Sala getSala() {
         return sala;
     }
-    
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
     public int getCodigo() {
         return codigo;
     }
@@ -94,5 +82,13 @@ public class Disciplina {
 
     public void setVagas(int vagas) {
         this.vagas = vagas;
+    }
+
+    public int getVagasDisponiveis() {
+        return vagasDisponiveis;
+    }
+
+    public void setVagasDisponiveis(int vagasDisponiveis) {
+        this.vagasDisponiveis = vagasDisponiveis;
     }
 }
