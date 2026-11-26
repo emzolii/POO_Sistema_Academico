@@ -1,4 +1,5 @@
 id,nome,matricula,email,rua,numero,cidade,uf
 10,Carlos Silva,2026001,carlos.silva@email.com,Rua 01,100,Recife,PE
 11,Mariana Costa,2026002,mariana.costa@email.com,Rua 02,45,Olinda,PE
+12,Gustavo Henrique,2026002,gustavo.henrique@email.com,Rua 03,68,Caruaru,PE
 
