@@ -1,3 +1,4 @@
+package modelo;
 public class Professor extends Pessoa {
     private String departamento;
 

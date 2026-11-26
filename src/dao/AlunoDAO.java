@@ -1,6 +1,11 @@
+package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import modelo.Aluno;
+import modelo.Endereco;
+import modelo.RegistroDuplicadoException;
 
 public class AlunoDAO {
     private final CursoDAO cursoDAO = new CursoDAO();

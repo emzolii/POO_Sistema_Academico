@@ -1,3 +1,4 @@
+package modelo;
 public class Matricula {
     private int id;
     private Aluno aluno;

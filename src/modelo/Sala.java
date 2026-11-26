@@ -1,3 +1,5 @@
+package modelo;
+
 public class Sala {
     private int id;
     private char bloco;

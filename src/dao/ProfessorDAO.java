@@ -1,6 +1,10 @@
+package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import modelo.Endereco;
+import modelo.Professor;
 
 public class ProfessorDAO {
 

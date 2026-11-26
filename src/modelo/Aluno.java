@@ -1,3 +1,4 @@
+package modelo;
 public class Aluno extends Pessoa {
     private static int contador = 1;
     private int matricula;

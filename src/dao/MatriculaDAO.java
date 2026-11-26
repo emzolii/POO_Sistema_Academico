@@ -1,6 +1,13 @@
+package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import modelo.Aluno;
+import modelo.Disciplina;
+import modelo.Matricula;
+import modelo.MatriculaDuplicadaException;
+import modelo.SalaSemCapacidadeException;
 
 public class MatriculaDAO {
     private final AlunoDAO alunoDAO = new AlunoDAO();

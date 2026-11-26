@@ -1,5 +1,27 @@
+package app;
 import java.io.File;
 import java.util.List;
+
+import dao.AlunoDAO;
+import dao.ConexaoSQLite;
+import dao.CursoDAO;
+import dao.DisciplinaDAO;
+import dao.ImportadorCSV;
+import dao.MatriculaDAO;
+import dao.ProfessorDAO;
+import dao.SalaDAO;
+import dao.ImportadorCSV.ResultadoImportacao;
+import modelo.Aluno;
+import modelo.ArquivoInvalidoException;
+import modelo.Curso;
+import modelo.Disciplina;
+import modelo.Endereco;
+import modelo.Matricula;
+import modelo.MatriculaDuplicadaException;
+import modelo.Professor;
+import modelo.RegistroDuplicadoException;
+import modelo.Sala;
+import modelo.SalaSemCapacidadeException;
 
 public class Main {
     public static void main(String[] args) {
@@ -119,7 +141,7 @@ public class Main {
         // 4. RF3.7: Importar alunos de um arquivo CSV salvando no SQLite
         System.out.println("\n--- Importação de Alunos via CSV (RF3.7) ---");
         try {
-            ImportadorCSV.ResultadoImportacao resultado = ImportadorCSV.importarAlunos("alunos.csv", alunoDAO);
+            ImportadorCSV.ResultadoImportacao resultado = ImportadorCSV.importarAlunos("docs/alunos.csv", alunoDAO);
             System.out.println("Importação CSV concluída: " + resultado.getResumo());
             for (Aluno a : alunoDAO.listarTodos()) {
                 System.out.println("- No banco: ID " + a.getId() + " | " + a.getNome()
